@@ -1,0 +1,9 @@
+parameter,symbol,value,unit,source
+Lake location (latitude),lat,19.13,deg N,Approximate lake centroid
+Lake location (longitude),lon,72.91,deg E,Approximate lake centroid
+Lake water-spread area,A_L,2.2,km2,Lekshmi et al. (2021)
+Catchment area,A_C,6.61,km2,Lekshmi et al. (2021)
+Depth at margins,z_margin,3,m,Lekshmi et al. (2021)
+Depth at centre,z_centre,10,m,Lekshmi et al. (2021)
+Mean depth (assumed range),z_mean,2.5-5.0,m,Assumed from margin/centre depths
+Year of construction,-,1891,-,Lekshmi et al. (2021)
