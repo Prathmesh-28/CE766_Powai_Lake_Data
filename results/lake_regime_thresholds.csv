@@ -1,0 +1,4 @@
+q,g_max,f_prime_max,r_over_m_for_hysteresis,r_over_m_for_irreversibility
+2.0,0.5,0.65,5.999,7.793
+3.0,0.529,0.84,4.639,7.364
+4.0,0.57,1.065,3.658,6.838

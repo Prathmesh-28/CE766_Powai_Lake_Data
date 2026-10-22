@@ -1,0 +1,5 @@
+scenario,load_t_per_yr_median,load_t_per_yr_p5,load_t_per_yr_p95,outflow_Mm3_per_yr_median,residence_time_yr_median,residence_time_yr_p5,residence_time_yr_p95,retention_R_median,loss_rate_k_per_yr_median,loss_rate_k_per_yr_p5,loss_rate_k_per_yr_p95,lake_TP_mgL_median,lake_TP_mgL_p5,lake_TP_mgL_p95,prob_TP_above_0_1,prob_TP_above_0_035
+S0 Before diversion,50.095,33.2061,72.7241,17.0429,0.4806,0.3054,0.7404,0.5906,5.082,2.9205,9.1994,1.208,0.7026,2.0281,1.0,1.0
+S1 Diversion + secondary effluent,17.5982,11.9185,23.6522,13.8779,0.5906,0.3624,0.9648,0.5655,3.8966,2.0917,7.3433,0.5453,0.3115,0.9601,1.0,1.0
+S2 Diversion + tertiary effluent,6.4447,3.1726,11.1318,13.8779,0.5906,0.3624,0.9648,0.5655,3.8966,2.0917,7.3433,0.1997,0.0902,0.4059,0.9209,1.0
+"S3 Diversion, no effluent return",4.2472,1.0741,8.8818,10.9579,0.749,0.4353,1.3691,0.5361,2.878,1.3547,5.7797,0.1759,0.0441,0.4613,0.7648,0.9724

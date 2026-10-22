@@ -1,0 +1,14 @@
+symbol,input,distribution,min,mode,max,unit,source
+P,Annual rainfall,resampled from IMD 2001-2025,1938,,4273,mm/yr,IMD gridded rainfall (Pai et al. 2014)
+z_mean,Mean lake depth,uniform,2.5,,5.0,m,Assumed from Lekshmi et al. (2021)
+C,Runoff coefficient,uniform,0.4,,0.8,-,Assumed
+E,Lake evaporation,uniform,1.2,,1.8,m/yr,Assumed
+Q_raw,Raw sewage inflow before diversion,uniform,15,,21,MLD,Free Press Journal (2025-26)
+TP_raw,TP of raw sewage,triangular,4,7,12,mg/L,Metcalf & Eddy (2003)
+e_u,Urban TP export coefficient,uniform,0.5,,2.5,kg/ha/yr,Reckhow et al. (1980)
+d,Atmospheric TP deposition on lake,uniform,0.1,,0.5,kg/ha/yr,Assumed
+f,Raw sewage still leaking in after diversion,uniform,0,,0.15,fraction,Assumed
+TP_sec,TP of secondary STP effluent,uniform,3.0,,6.0,mg/L,Assumed
+TP_ter,TP of tertiary STP effluent,uniform,0.5,,1.0,mg/L,Assumed
+Q_STP,Treated effluent returned to lake,fixed,8,,8,MLD,Free Press Journal (2026)
+N,Monte Carlo sample size,fixed,20000,,20000,-,-

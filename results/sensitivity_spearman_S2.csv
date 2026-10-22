@@ -1,0 +1,9 @@
+input,spearman_rho
+leakage f,0.702
+rainfall P,-0.485
+runoff coefficient C,-0.282
+raw sewage TP,0.244
+tertiary effluent TP,0.137
+mean depth,0.113
+export coefficient,0.086
+evaporation E,0.075

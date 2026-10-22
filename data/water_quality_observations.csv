@@ -1,0 +1,7 @@
+parameter,location,statistic,value,unit,period,source
+Total phosphorus,Lake centre,mean,0.93,mg/L,Apr 2018 - Mar 2020,Lekshmi et al. (2021)
+Total phosphorus,Lake centre,standard deviation,0.61,mg/L,Apr 2018 - Mar 2020,Lekshmi et al. (2021)
+Total phosphorus,Periphery (8 stations),minimum,0.05,mg/L,Apr 2018 - Mar 2020,Lekshmi et al. (2021)
+Total phosphorus,Periphery (8 stations),maximum,2.78,mg/L,Apr 2018 - Mar 2020,Lekshmi et al. (2021)
+Phosphate,Lake,minimum,0.17,mg/L,Nov 2016 - Oct 2017,Usman et al. (2018)
+Phosphate,Lake,maximum,5.00,mg/L,Nov 2016 - Oct 2017,Usman et al. (2018)
