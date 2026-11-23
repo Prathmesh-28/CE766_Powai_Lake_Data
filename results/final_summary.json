@@ -1,0 +1,58 @@
+{
+ "nsga2": {
+  "pop_size": 100,
+  "generations": 120,
+  "n_baseline_futures": 200,
+  "n_pareto": 100
+ },
+ "deep_uncertainty": {
+  "n_futures": 1000,
+  "satisficing": "mean TP in 2033-2037 (years 6-10) < 0.1 mg/L"
+ },
+ "compromise": {
+  "policy": "P88",
+  "TP_eff": 0.14463105556484934,
+  "u": 0.8861603524526778,
+  "H": 27.63456931403453,
+  "cost_cr_per_yr": 3.5123468449731385,
+  "mean_TP": 0.058036227888631234,
+  "reliability": 0.9032083333333334,
+  "robustness": 0.857
+ },
+ "best_pareto_robustness": 0.947,
+ "status_quo": {
+  "cost_cr_per_yr": 0.0,
+  "mean_TP_mgL": 0.7788269262033041,
+  "reliability": 0.0,
+  "robustness": 0.0
+ },
+ "tertiary_only": {
+  "cost_cr_per_yr": 0.7588479939543525,
+  "mean_TP_mgL": 0.3861769749338728,
+  "reliability": 0.005583333333333333,
+  "robustness": 0.036
+ },
+ "prim_box": {
+  "coverage": 0.7342657342657343,
+  "density": 0.813953488372093,
+  "mass": 0.129,
+  "limits": {
+   "z": [
+    3.3699341473098245,
+    4.997774195634689
+   ],
+   "v_s": [
+    5.002103844798948,
+    11.79451184377971
+   ],
+   "r_over_m": [
+    6.5512264627252135,
+    9.998885860858932
+   ],
+   "sigma": [
+    1.03154890992908,
+    2.483063400912428
+   ]
+  }
+ }
+}

@@ -1,0 +1,7 @@
+numpy
+pandas
+scipy
+matplotlib
+requests
+pymoo==0.6.1.5
+reportlab==4.2.5

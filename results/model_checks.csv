@@ -1,0 +1,4 @@
+case,median,p5,p95
+"pre-diversion, no recycling (prelim S0 = 1.21)",1.395,0.678,2.289
+"pre-diversion, nominal recycling r/m = 4",1.561,0.83,2.508
+"tertiary STP, no recycling (prelim S2 = 0.20)",0.173,0.086,0.351
