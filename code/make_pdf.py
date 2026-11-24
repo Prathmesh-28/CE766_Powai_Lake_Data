@@ -1,10 +1,14 @@
 """
 Build the submission PDF from CE766_Final_Submission_Text.md (single source of truth) and the two figures.
+Page 1 is a cover page in the IIT Bombay report style (faded logo behind the text); every later page
+carries the logo in the top-right corner and a "CE766 | ... Page x of y" footer.
 Run from the repository root:   python code/make_pdf.py
 Output: CE766_Final_Submission_PowaiLake.pdf
 """
 import os, re, html
+from typing import Any, Dict
 import matplotlib
+from PIL import Image as PILImage
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import mm
 from reportlab.lib.colors import HexColor
@@ -14,7 +18,7 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas
 from reportlab.platypus import (SimpleDocTemplate, Paragraph, Spacer, Image, ListFlowable, ListItem,
-                                KeepTogether, HRFlowable)
+                                KeepTogether, PageBreak)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SUB = os.path.dirname(HERE)                                # repository root
@@ -22,6 +26,8 @@ MD = os.path.join(SUB, "CE766_Final_Submission_Text.md")
 OUT = os.path.join(SUB, "CE766_Final_Submission_PowaiLake.pdf")
 FIGS = {"Figure 1.": os.path.join(SUB, "figures", "Figure1_pareto_robustness.png"),
         "Figure 2.": os.path.join(SUB, "figures", "Figure2_trajectories_prim.png")}
+LOGO = os.path.join(SUB, "figures", "iitb_logo.png")              # IIT Bombay logo (page header)
+WMARK = os.path.join(SUB, "figures", "iitb_logo_watermark.png")   # faded copy (cover page)
 
 # ---------------- fonts (DejaVu ships with matplotlib and covers Greek, arrows, combining marks) ----------------
 FONT_DIR = os.path.join(os.path.dirname(matplotlib.__file__), "mpl-data", "fonts", "ttf")
@@ -40,9 +46,39 @@ h2 = ParagraphStyle("h2", fontName="DejaVuSans-Bold", fontSize=12.2, leading=15,
                     spaceAfter=4)
 eq = ParagraphStyle("eq", fontName="DejaVuSerif", fontSize=10.2, leading=15, alignment=TA_CENTER, textColor=INK,
                     spaceBefore=1, spaceAfter=6)
-title = ParagraphStyle("title", fontName="DejaVuSans-Bold", fontSize=16.5, leading=21, textColor=NAVY, spaceAfter=3)
-subtitle = ParagraphStyle("subtitle", fontName="DejaVuSans", fontSize=10.5, leading=14, textColor=INK2, spaceAfter=7)
-meta = ParagraphStyle("meta", fontName="DejaVuSans", fontSize=9.2, leading=13, textColor=INK, spaceAfter=2)
+
+# ---------------- cover page (same layout, fonts and colours as the CE769 report cover) ----------------
+COVER_NAVY, COVER_BLUE, FOOT_RULE = HexColor("#1F3864"), HexColor("#0070C0"), HexColor("#4F81BD")
+
+
+def cover_style(name, **k):
+    base: Dict[str, Any] = dict(fontName="Times-Bold", fontSize=14, leading=20, alignment=TA_CENTER, textColor=INK)
+    base.update(k)
+    return ParagraphStyle(name, **base)
+
+
+c_report, c_title = cover_style("c_report", textColor=COVER_NAVY), cover_style("c_title", fontSize=15.5, leading=22)
+c_sub, c_line = cover_style("c_sub", fontSize=13.5), cover_style("c_line")
+c_by, c_name = cover_style("c_by", fontName="Times-BoldItalic"), cover_style("c_name", textColor=COVER_BLUE)
+c_date = cover_style("c_date", textColor=COVER_NAVY)
+cover = [
+    Spacer(1, 15 * mm), Paragraph("A Report on", c_report), Spacer(1, 4 * mm),
+    Paragraph("REFORMULATING THE LAKE PROBLEM<br/>FOR POWAI LAKE, MUMBAI", c_title), Spacer(1, 2 * mm),
+    Paragraph("(Robust Phosphorus Management after Sewage Diversion)", c_sub), Spacer(1, 22 * mm),
+    Paragraph("CE766 Course Project Report:", c_line), Paragraph("Watershed Management", c_line), Spacer(1, 12 * mm),
+    Paragraph("Submitted by", c_by), Spacer(1, 2 * mm), Paragraph("Prathmesh Walimbe (23B0747)", c_name),
+    Spacer(1, 30 * mm), Paragraph("<u>Submission Date: 24 November 2026</u>", c_date), Spacer(1, 10 * mm),
+    Paragraph("Department of Civil Engineering", c_line), Paragraph("Indian Institute of Technology Bombay", c_line),
+    Paragraph("Powai, Mumbai - 400076", c_line), PageBreak(),
+]
+
+
+def cover_page(c, doc):                                     # faded logo behind the cover text
+    w, h = A4
+    iw, ih = PILImage.open(WMARK).size
+    lw = 165 * mm
+    lh = lw * ih / iw
+    c.drawImage(WMARK, (w - lw) / 2, h - 58 * mm - lh, width=lw, height=lh, mask="auto")
 
 # ---------------- inline markdown -> reportlab markup ----------------
 SUBSCRIPT = re.compile(r"\b(A|Q|TP|P|e|v|p)_(C|L|STP|raw|eff|yr|u|s|h)\b")
@@ -91,15 +127,23 @@ class NumberedCanvas(canvas.Canvas):
         super().save()
 
     def decorate(self, n):
+        if self._pageNumber == 1:                           # cover page: no header or footer
+            return
         w, h = A4
-        self.setStrokeColor(RULE); self.setLineWidth(0.6)
-        self.line(20 * mm, h - 13 * mm, w - 20 * mm, h - 13 * mm)
-        self.line(20 * mm, 13 * mm, w - 20 * mm, 13 * mm)
-        self.setFont("DejaVuSans", 7.8); self.setFillColor(INK2)
-        self.drawString(20 * mm, h - 11 * mm, "CE 766: Watershed Management (Fall 2026)")
-        self.drawRightString(w - 20 * mm, h - 11 * mm, "Final Project Submission")
-        self.drawString(20 * mm, 9 * mm, "Prathmesh Walimbe (23B0747)")
-        self.drawRightString(w - 20 * mm, 9 * mm, f"Page {self._pageNumber} of {n}")
+        iw, ih = PILImage.open(LOGO).size
+        lh = 12.5 * mm
+        lw = lh * iw / ih
+        self.drawImage(LOGO, w - 20 * mm - lw, h - 5.5 * mm - lh, width=lw, height=lh, mask="auto")
+        self.setStrokeColor(FOOT_RULE); self.setLineWidth(1.4)
+        self.line(20 * mm, 14 * mm, w - 20 * mm, 14 * mm)
+        self.setFillColor(INK); self.setFont("Times-Bold", 9.5)
+        self.drawString(20 * mm, 9.5 * mm, "CE766 | Powai Lake Phosphorus Management")
+        parts = [("Page ", "Times-Roman"), (str(self._pageNumber), "Times-Bold"), (" of ", "Times-Roman"),
+                 (str(n), "Times-Bold")]
+        x = w - 20 * mm - sum(pdfmetrics.stringWidth(t, f, 9.5) for t, f in parts)
+        for t, f in parts:
+            self.setFont(f, 9.5); self.drawString(x, 9.5 * mm, t)
+            x += pdfmetrics.stringWidth(t, f, 9.5)
 
 
 # ---------------- parse the markdown ----------------
@@ -108,14 +152,7 @@ lines = lines[lines.index("---") + 1:]                     # skip the md title /
 EQ = re.compile(r"^(Q\(t\)|L\(t\)|X\(t\+1\)) =")
 frame_w = A4[0] - 40 * mm
 
-story = [
-    Paragraph("Reformulating the Lake Problem for Powai Lake, Mumbai", title),
-    Paragraph("Final submission: robust phosphorus management after sewage diversion", subtitle),
-    Paragraph("<b>Name:</b> Prathmesh Walimbe &nbsp;&nbsp;&nbsp; <b>Roll No.:</b> 23B0747", meta),
-    Paragraph('<b>Repository:</b> <a href="https://github.com/Prathmesh-28/CE766_Powai_Lake_Data" color="#1a5fb4">'
-              "github.com/Prathmesh-28/CE766_Powai_Lake_Data</a>", meta),
-    Spacer(1, 3), HRFlowable(width="100%", thickness=0.8, color=RULE, spaceBefore=2, spaceAfter=4),
-]
+story = list(cover)
 
 items, kind = [], None
 
@@ -154,7 +191,6 @@ for ln in lines:
         story.append(p); continue
     fig = next((p for key, p in FIGS.items() if s.startswith(f"**{key}**")), None)
     if fig:
-        from PIL import Image as PILImage
         iw, ih = PILImage.open(fig).size
         story.append(KeepTogether([Spacer(1, 2), Image(fig, width=frame_w, height=frame_w * ih / iw), Spacer(1, 6)]))
     story.append(Paragraph(fmt(s), body))
@@ -163,5 +199,5 @@ flush()
 doc = SimpleDocTemplate(OUT, pagesize=A4, leftMargin=20 * mm, rightMargin=20 * mm, topMargin=19 * mm,
                         bottomMargin=19 * mm, title="Reformulating the Lake Problem for Powai Lake, Mumbai - Final submission",
                         author="Prathmesh Walimbe (23B0747)", subject="CE 766 Watershed Management, final project submission")
-doc.build(story, canvasmaker=NumberedCanvas)
+doc.build(story, onFirstPage=cover_page, canvasmaker=NumberedCanvas)
 print("saved", OUT)
