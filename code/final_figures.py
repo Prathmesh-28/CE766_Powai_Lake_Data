@@ -38,7 +38,7 @@ a.yaxis.set_major_locator(FixedLocator([0.05, 0.1, 0.2, 0.5, 1.0]))
 a.yaxis.set_major_formatter(FixedFormatter(["0.05", "0.1", "0.2", "0.5", "1.0"]))
 a.yaxis.set_minor_locator(FixedLocator([]))
 a.axhline(0.1, color=INK2, lw=0.9, ls=":")
-a.text(5.05, 0.104, "Hypereutrophic limit 0.1 mg/L", ha="right", va="bottom", fontsize=10, color=INK2)
+a.text(-0.1, 0.104, "Hypereutrophic limit 0.1 mg/L", ha="left", va="bottom", fontsize=10, color=INK2)
 for p, lab, dx, dy, ha in [(sq, "Status quo\n(secondary STP only)", 0.12, 0.0, "left"),
                            (s2, "Tertiary STP only\n(prelim. S2)", 0.12, 0.03, "left")]:
     a.scatter(p.cost_cr_per_yr, p.mean_TP_mgL, marker="s", s=70, color=GREY, edgecolor="white", zorder=4)
