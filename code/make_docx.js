@@ -186,6 +186,7 @@ const listLevel = (format, text) => ({
 const mm = (v) => Math.round(v * TWIP_PER_MM);
 const doc = new Document({
   creator: "Prathmesh Walimbe",
+  lastModifiedBy: "Prathmesh Walimbe",
   title: "Reformulating the Lake Problem for Powai Lake, Mumbai",
   description: "CE766 Watershed Management: final project report",
   styles: {
